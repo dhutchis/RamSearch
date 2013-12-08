@@ -5,6 +5,7 @@
 %\usepackage[hidelinks]{hyperref}
 \usepackage{booktabs}
 \usepackage{MnSymbol}
+%\usepackage{listings}
 
 \usepackage{amsthm}
 \theoremstyle{plain}
@@ -53,6 +54,56 @@ or a subset $U \subseteq S$ of length $q$ such that \\
 \phantom{$\qquad$} all of the $\binom{q}{2}$ pair subsets of $U$ are contained in $\mathcal{A}_2$.
 \end{myindentpar}
 %\end{remark}
+
+Lower Bounds
+\begin{itemize}
+\item Parity Argument: $\forall m, \; R(m,3) > 2(m-1)$
+\item Probability Argument: if $\exists\, t \in [0,1]$ such that $\binom{n}{p}t^{\binom{p}{2}} + \binom{n}{q}(1-t)^{\binom{q}{2}} < 1$, \\
+\phantom{Probability Argument:} then $R(p,q) > n$.
+\item Constructive Argument: Find a \textit{bad} graph size $n$ such that it has no $p$-clique \\
+\phantom{Constructive Argument:} or $q$-indep. subgraph. Then $R(p,q) > n$.
+\end{itemize}
+
+Upper Bounds
+\begin{itemize}
+\item Graph Argument: $\forall p,q \geq 2, \; R(p,q) \leq R(p,q-1) + R(p-1,q)$
+\item Induction/Generating Functions: $\forall p,q \geq 2, \quad R(p,q) \leq \binom{p+q-2}{p-1}$
+\item Brute Force: Show that every graph of size $n$ has a $p$-clique \\
+\phantom{Brute Force:} or $q$-indep. subgraph. Then $R(p,q) \leq n$.
+\end{itemize}
+
+Asymptotics
+\begin{itemize}
+\item Noticed $R(p,q) = O\left(\dfrac{R(p,q-1)^2}{R(p,q-2)}\right)$
+\item $R(3,t) = \Theta\left(\dfrac{t^2}{log t}\right)$ in literature [Kim 1995]
+\end{itemize}
+
+\[ 
+\max_{m \geq 1} m \text{ such that } n >= R(2,m)
+\]
+
+\[
+\min_G C(G) + I(G)
+\]
+
+%\lstset{language=C++}
+%while (!found_ub) {
+%	gr_init(&gr, n);
+%	do {
+%		gr_search(&gr, qboth);
+%		gr_incr(&gr);
+%	} while (gr.foundki != NONE && !gr_allzero(&gr));
+%
+%	if (gr.foundki != NONE) {
+%		found_ub = true;
+%	} else {
+%		// n is a lower bound
+%	}
+%	gr_free(&gr);
+%
+%	n++;
+%}
+%\end{lstlisting}
 
 
 
