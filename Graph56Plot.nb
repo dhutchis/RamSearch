@@ -1,0 +1,170 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 9.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[      4991,        160]
+NotebookOptionsPosition[      4528,        139]
+NotebookOutlinePosition[      4871,        154]
+CellTagsIndexPosition[      4828,        151]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+ RowBox[{"GraphPlot", "[", 
+  RowBox[{"{", 
+   RowBox[{
+    RowBox[{"1", "\[Rule]", "2"}], ",", 
+    RowBox[{"2", "\[Rule]", "3"}], ",", 
+    RowBox[{"3", "\[Rule]", "4"}], ",", 
+    RowBox[{"4", "\[Rule]", "5"}], ",", 
+    RowBox[{"5", "\[Rule]", "1"}]}], "}"}], "]"}]], "Input",
+ CellChangeTimes->{{3.595453771835662*^9, 3.5954537976971407`*^9}, {
+  3.5954540329925985`*^9, 3.595454036547802*^9}}],
+
+Cell[BoxData[
+ GraphicsBox[
+  TagBox[GraphicsComplexBox[{{0.3361153790724738, 0.}, {1.3360777192015183`, 
+    0.028526338866385004`}, {1.6176747208567557`, 0.9881822401668945}, {
+    0.7916366970091607, 1.552202585371472}, {0., 0.9407810399349575}}, {
+     {RGBColor[0.5, 0., 0.], 
+      LineBox[{{1, 2}, {2, 3}, {3, 4}, {4, 5}, {5, 1}}]}, 
+     {RGBColor[0, 0, 0.7], 
+      TagBox[
+       TooltipBox[PointBox[1],
+        "1"],
+       Annotation[#, 1, "Tooltip"]& ], 
+      TagBox[
+       TooltipBox[PointBox[2],
+        "2"],
+       Annotation[#, 2, "Tooltip"]& ], 
+      TagBox[
+       TooltipBox[PointBox[3],
+        "3"],
+       Annotation[#, 3, "Tooltip"]& ], 
+      TagBox[
+       TooltipBox[PointBox[4],
+        "4"],
+       Annotation[#, 4, "Tooltip"]& ], 
+      TagBox[
+       TooltipBox[PointBox[5],
+        "5"],
+       Annotation[#, 5, "Tooltip"]& ]}}],
+   Annotation[#, 
+    VertexCoordinateRules -> {{0.3361153790724738, 0.}, {1.3360777192015183`, 
+     0.028526338866385004`}, {1.6176747208567557`, 0.9881822401668945}, {
+     0.7916366970091607, 1.552202585371472}, {0., 0.9407810399349575}}]& ],
+  AspectRatio->Automatic,
+  FrameTicks->None,
+  ImageSize->{216., Automatic},
+  PlotRange->All,
+  PlotRangePadding->Scaled[0.1]]], "Output",
+ CellChangeTimes->{{3.5954537743388047`*^9, 3.5954537998862658`*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"GraphPlot", "[", 
+  RowBox[{"{", 
+   RowBox[{
+    RowBox[{"1", "\[Rule]", "2"}], ",", 
+    RowBox[{"2", "\[Rule]", "3"}], ",", 
+    RowBox[{"3", "\[Rule]", "4"}], ",", 
+    RowBox[{"4", "\[Rule]", "5"}], ",", 
+    RowBox[{"5", "\[Rule]", "1"}], ",", 
+    RowBox[{"1", "\[Rule]", "6"}], ",", 
+    RowBox[{"6", "\[Rule]", "3"}]}], "}"}], "]"}]], "Input",
+ CellChangeTimes->{{3.595453962044541*^9, 3.5954540046919804`*^9}, {
+  3.595454041424081*^9, 3.595454057209984*^9}}],
+
+Cell[BoxData[
+ GraphicsBox[
+  TagBox[GraphicsComplexBox[{{1.0862316106703684`, 1.0000077941901566`}, {
+    1.8213290719687416`, 0.8881500073873478}, {1.0857966970730824`, 0.}, {0., 
+    0.03240523549626928}, {0.00014704178479774122`, 0.9681966053977191}, {
+    1.8208042367745838`, 0.11195834026392737`}}, {
+     {RGBColor[0.5, 0., 0.], 
+      LineBox[{{1, 2}, {1, 6}, {2, 3}, {3, 4}, {4, 5}, {5, 1}, {6, 3}}]}, 
+     {RGBColor[0, 0, 0.7], 
+      TagBox[
+       TooltipBox[PointBox[1],
+        "1"],
+       Annotation[#, 1, "Tooltip"]& ], 
+      TagBox[
+       TooltipBox[PointBox[2],
+        "2"],
+       Annotation[#, 2, "Tooltip"]& ], 
+      TagBox[
+       TooltipBox[PointBox[3],
+        "3"],
+       Annotation[#, 3, "Tooltip"]& ], 
+      TagBox[
+       TooltipBox[PointBox[4],
+        "4"],
+       Annotation[#, 4, "Tooltip"]& ], 
+      TagBox[
+       TooltipBox[PointBox[5],
+        "5"],
+       Annotation[#, 5, "Tooltip"]& ], 
+      TagBox[
+       TooltipBox[PointBox[6],
+        "6"],
+       Annotation[#, 6, "Tooltip"]& ]}}],
+   Annotation[#, 
+    VertexCoordinateRules -> {{1.0862316106703684`, 1.0000077941901566`}, {
+     1.8213290719687416`, 0.8881500073873478}, {1.0857966970730824`, 0.}, {0.,
+      0.03240523549626928}, {0.00014704178479774122`, 0.9681966053977191}, {
+     1.8208042367745838`, 0.11195834026392737`}}]& ],
+  AspectRatio->Automatic,
+  FrameTicks->None,
+  ImageSize->{315., Automatic},
+  PlotRange->All,
+  PlotRangePadding->Scaled[0.1]]], "Output",
+ CellChangeTimes->{3.5954540105743165`*^9, 3.5954540584230537`*^9}]
+}, Open  ]],
+
+Cell[BoxData["\[AliasDelimiter]"], "Input",
+ CellChangeTimes->{{3.595454093782076*^9, 3.595454096838251*^9}}]
+},
+WindowSize->{707, 817},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"9.0 for Microsoft Windows (64-bit) (November 20, 2012)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[579, 22, 413, 10, 31, "Input"],
+Cell[995, 34, 1323, 37, 222, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[2355, 76, 493, 12, 31, "Input"],
+Cell[2851, 90, 1549, 43, 188, "Output"]
+}, Open  ]],
+Cell[4415, 136, 109, 1, 31, "Input"]
+}
+]
+*)
+
+(* End of internal cache information *)
+

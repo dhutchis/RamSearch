@@ -1,0 +1,59 @@
+\documentclass[letterpaper,12pt]{article}
+\usepackage{amsmath}
+\usepackage{amsfonts} % for \mathbb{R}
+\usepackage[margin=1.15in]{geometry}
+%\usepackage[hidelinks]{hyperref}
+\usepackage{booktabs}
+\usepackage{MnSymbol}
+
+\usepackage{amsthm}
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}%[subsubsection] % reset theorem numbering at subsubsection
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+\theoremstyle{definition}
+\newtheorem{claim}[thm]{Claim} %dependent on theorem numbers
+\newtheorem{subclaim}[thm]{Subclaim}
+
+\newenvironment{myindentpar}[1]%
+ {\begin{list}{}%
+         {\setlength{\leftmargin}{#1}}%
+         \item[]%
+ }
+ {\end{list}}
+
+\pagestyle{empty}
+%\pagestyle{myheadings}
+%\markright{\hfill \hfill \textnormal{Hutchison} }
+
+\author{Dylan Hutchison}
+
+\begin{document}
+
+%\section*{Ramsey's Theorem}
+%\begin{thm}[Compact Ramsey] 
+\begin{align*}
+&\forall p,q \;\exists R(p,q),\; \forall n \geq R, \\
+&\forall S, \;|S|=n, \;\forall P_2(S)=\mathcal{A}_1 \cupdot \mathcal{A}_2 \\
+&(\exists U \subseteq S, \; |U|=p, \; P_2(U) \subseteq \mathcal{A}_1) \lor (\exists U \subseteq S, \; |U|=q, \; P_2(U) \subseteq \mathcal{A}_2) 
+\end{align*}
+%\end{thm}
+
+%\begin{remark}
+\begin{myindentpar}{2em}
+Given subset numbers $p,q$, \\
+there is a minimum Ramsey number $R$ that, for any set $S$ of size $n \geq R$ \\
+and for any partitioning of all the $\binom{n}{2}$ pair subsets of $S$ into the sets of pairs \\
+\phantom{$\qquad$} $\mathcal{A}_1, \mathcal{A}_2 \qquad$ ($\mathcal{A}_1 \cap \mathcal{A}_2 = \emptyset$, but we allow $\mathcal{A}_1 = \emptyset$ or $\mathcal{A}_2 = \emptyset$), \\
+there exists either a subset $U \subseteq S$ of length $p$ such that \\
+\phantom{$\qquad$} all of the $\binom{p}{2}$ pair subsets of $U$ are contained in $\mathcal{A}_1$, \\
+or a subset $U \subseteq S$ of length $q$ such that \\
+\phantom{$\qquad$} all of the $\binom{q}{2}$ pair subsets of $U$ are contained in $\mathcal{A}_2$.
+\end{myindentpar}
+%\end{remark}
+
+
+
+\end{document}
