@@ -5,18 +5,18 @@
 %\usepackage[hidelinks]{hyperref}
 \usepackage{booktabs}
 \usepackage{MnSymbol}
-%\usepackage{listings}
+\usepackage{listings}
 
-\usepackage{amsthm}
-\theoremstyle{plain}
-\newtheorem{thm}{Theorem}%[subsubsection] % reset theorem numbering at subsubsection
-\theoremstyle{definition}
-\newtheorem{defn}{Definition}
-\theoremstyle{remark}
-\newtheorem{remark}{Remark}
-\theoremstyle{definition}
-\newtheorem{claim}[thm]{Claim} %dependent on theorem numbers
-\newtheorem{subclaim}[thm]{Subclaim}
+%\usepackage{amsthm}
+%\theoremstyle{plain}
+%\newtheorem{thm}{Theorem}%[subsubsection] % reset theorem numbering at subsubsection
+%\theoremstyle{definition}
+%\newtheorem{defn}{Definition}
+%\theoremstyle{remark}
+%\newtheorem{remark}{Remark}
+%\theoremstyle{definition}
+%\newtheorem{claim}[thm]{Claim} %dependent on theorem numbers
+%\newtheorem{subclaim}[thm]{Subclaim}
 
 \newenvironment{myindentpar}[1]%
  {\begin{list}{}%
@@ -86,24 +86,26 @@ Asymptotics
 \min_G C(G) + I(G)
 \]
 
-%\lstset{language=C++}
-%while (!found_ub) {
-%	gr_init(&gr, n);
-%	do {
-%		gr_search(&gr, qboth);
-%		gr_incr(&gr);
-%	} while (gr.foundki != NONE && !gr_allzero(&gr));
-%
-%	if (gr.foundki != NONE) {
-%		found_ub = true;
-%	} else {
-%		// n is a lower bound
-%	}
-%	gr_free(&gr);
-%
-%	n++;
-%}
-%\end{lstlisting}
+\lstset{language=C++,tabsize=3}
+\begin{lstlisting}
+// set n := known number below ub
+while (!found_ub) {
+	gr_init(&gr, n);
+	do {
+		gr_search(&gr, qboth);
+		gr_incr(&gr);
+	} while (gr.foundki != NONE && !gr_allzero(&gr));
+
+	if (gr.foundki != NONE) {
+		found_ub = true;
+	} else {
+		// n is a lower bound
+	}
+	gr_free(&gr);
+
+	n++;
+}
+\end{lstlisting}
 
 
 
