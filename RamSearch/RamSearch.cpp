@@ -47,12 +47,14 @@ void gr_free(t_gr *gr)
 	//if (gr->subgraph) { delete[] gr->subgraph; gr->subgraph = NULL; }
 }
 void gr_print(const t_gr *gr) {
+	if (!gr) return;
 	//std::cout << gr->n << ':';
 	for (int i=0; i<gr_nv(gr); i++)
 		std::cout << gr->adjarr[i];
 	std::cout << std::endl;
 }
 void gr_print_all(const t_gr *gr) {
+	if (!gr) return;
 	//std::cout << gr->n << ':';
 	for (int i=2; i<=gr->n; i++)
 		for (int j=1; j < i; j++)
@@ -218,7 +220,7 @@ void bigfind_multi(const int qboth, const int lb_start) {
 				gr_incr_ignore(&gr,3);
 				// check to see if another thread found a lb bad graph
 				// if so, stop work
-
+				//#pragma omp flush(n_lb)
 				if (n_lb)
 					break;
 			} while (gr.foundki != NONE && !gr_allzero_ignore(&gr,3));
@@ -300,8 +302,8 @@ int test_main() {
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	//_CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
-	/*if (test_main() != 0)
+	/*_CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+	if (test_main() != 0)
 		return 1;
 	char c2; std::cin >> c2;
 	return 0;*/
