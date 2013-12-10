@@ -1,7 +1,7 @@
 #include <iostream>
 #include <map>
 
-enum t_found { NONE=0, CLIQUE, INDEP };
+enum t_found { NONE=0, CLIQUE, INDEP, NOMEM };
 // trick to output string name
 std::ostream& operator<<(std::ostream& out, const t_found value){
     const char* s = 0;

@@ -15,7 +15,11 @@ void gr_init(t_gr *gr, int n)
 {
 	if (!gr || n <= 0) return;
 	gr->n = n;
-	gr->adjarr = new bool[n*(n-1)/2];
+	gr->adjarr = new (std::nothrow) bool[n*(n-1)/2];
+	if (gr->adjarr == NULL) {
+		gr->foundki = NOMEM;
+		return;
+	}
 	for (int i=0; i<gr_nv(gr); i++)
 		gr->adjarr[i] = 0;
 	gr->foundki = NONE;
@@ -96,8 +100,18 @@ bool gr_allzero_ignore(const t_gr *gr, int ignore) {
 
 void gr_search(t_gr *gr, int qboth) {
 	//gr_print_all(gr);
-	bool **choicearr = new bool*[qboth];
-	int *choices = new int[qboth];
+	bool **choicearr = new (std::nothrow) bool*[qboth];
+	if (choicearr == NULL) {
+		std::cout << "out of memory; cannot allocate choicearr["<<qboth<<"]\n";
+		return;
+	}
+	int *choices = new (std::nothrow) int[qboth];
+	if (choices == NULL) {
+		std::cout << "out of memory; cannot allocate choice["<<qboth<<"]\n";
+		delete[] choicearr;
+		return;
+	}
+
 	gr->foundki = NONE;
 
 	for (int i=gr->n; i >= qboth; i--) {
@@ -105,7 +119,7 @@ void gr_search(t_gr *gr, int qboth) {
 		choices[0] = i;
 		gr_search_rec(gr, qboth-1, 1, choices, choicearr);
 		if (gr->foundki != NONE) // if we didn't find an indep set or clique subgraph yet, keep looking
-				return;
+				break;
 	}
 	// if there is NO indep set or clique subgraph at this point, then this graph is a counterexample
 
@@ -164,7 +178,9 @@ void bigfind(int qboth, int lb_start) {
 			gr_incr(&gr);
 		} while (gr.foundki != NONE && !gr_allzero(&gr));
 
-		if (gr.foundki != NONE) {
+		if (gr.foundki == NOMEM) 
+			return;
+		else if (gr.foundki != NONE) {
 			found_ub = true;
 			std::cout << "FOUND UB R(" << qboth<<','<<qboth << ")<=" << gr.n << std::endl;
 			std::cout << "\t ------\n";
@@ -207,11 +223,16 @@ void bigfind_multi(const int qboth, const int lb_start) {
 					break;
 			} while (gr.foundki != NONE && !gr_allzero_ignore(&gr,3));
 
-			if (gr.foundki == NONE) {
+			if (gr.foundki == NOMEM) {
+				//#pragma omp atomic
+				n_lb = true;
+				
+			} else if (gr.foundki == NONE) {
 				// just one thread do this
-				#pragma omp critical
+					#pragma omp critical
 					if (!n_lb) { // only run on first thread, even if others simulatneously found a bad graph
 						std::cout << "f"<< omp_get_thread_num() <<"\n";
+						//#pragma omp atomic
 						n_lb = true; // tell others to stop; I found a bad graph
 						std::cout << "FOUND LB R(" << qboth<<','<<qboth << ")>" << gr.n << ' ';
 						gr_print(&gr);
