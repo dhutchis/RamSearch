@@ -136,7 +136,7 @@ void gr_search_rec(t_gr *gr, int qtogo, int qsofar, int *choices, bool **choicea
 		bool indep = true, clique = true;
 		for (int i = qsofar-1; i >= 1; i--) {
 			for (int j=i; j < qsofar; j++) {
-				if (choicearr[i-1][choices[j]] ) {
+				if (choicearr[i-1][choices[j]-1] ) {
 					indep = false;
 					if (clique==false) return; // not a clique, not an independent set
 				} else {
@@ -229,11 +229,14 @@ void bigfind_multi(const int qboth, const int lb_start) {
 				
 			} else if (gr.foundki == NONE) {
 				// just one thread do this
+					#pragma omp flush(n_lb)
 					#pragma omp critical
 					if (!n_lb) { // only run on first thread, even if others simulatneously found a bad graph
 						std::cout << "f"<< omp_get_thread_num() <<"\n";
 						//#pragma omp atomic
 						n_lb = true; // tell others to stop; I found a bad graph
+						#pragma omp flush(n_lb)
+
 						std::cout << "FOUND LB R(" << qboth<<','<<qboth << ")>" << gr.n << ' ';
 						gr_print(&gr);
 						std::cout << "\t" << gr.foundki << '\n';
@@ -241,6 +244,9 @@ void bigfind_multi(const int qboth, const int lb_start) {
 			}
 
 			gr_free(&gr);
+
+		//#pragma omp barrier
+
 		}
 		// only one thread here (master thread 0)
 		//std::cout << "d"<< omp_get_thread_num() <<" ";
@@ -260,12 +266,12 @@ void bigfind_multi(const int qboth, const int lb_start) {
 int test_main() {
 	t_gr gr;
 
-	gr_init(&gr, 3);
-	/*gr.adjarr[0] = 1;
-	gr.adjarr[2] = 1;
+	gr_init(&gr, 4);
+	gr.adjarr[0] = 1;
+	gr.adjarr[1] = 1;
 	gr_search(&gr, 3);
 	std::cout<<gr.foundki;
-	gr_print(&gr);*/
+	gr_print(&gr);
 
 	// test t_gr functions
 	/*gr_init(&gr,3);
@@ -295,12 +301,16 @@ int test_main() {
 int _tmain(int argc, _TCHAR* argv[])
 {
 	//_CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+	/*if (test_main() != 0)
+		return 1;
+	char c2; std::cin >> c2;
+	return 0;*/
 
-	//if (test_main() != 0)
-		//return 1;
-
+#ifdef OMPON
 	bigfind_multi(4,3);
-	//_CrtDumpMemoryLeaks();
+#else
+	bigfind(4,3);
+#endif
 
 	char c; std::cin >> c;
 	return 0;
