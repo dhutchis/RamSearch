@@ -20,7 +20,7 @@ typedef struct {
 	bool *adjarr;
 	int n; // total # edges = n(n-1)/2
 	t_found	foundki;
-	int *subgraph;
+	//int *subgraph;
 } t_gr;
 
 typedef struct {
@@ -39,3 +39,9 @@ void gr_search_rec(t_gr *gr, int qtogo, int qsofar, int *choices, bool **choicea
 
 // search for a lower bound, starting n at the given number
 void bigfind(int qboth, int lb_start);
+
+// OpenMP parallel
+void gr_init_given(t_gr *gr, int n, int firstnum, int totalbits);
+void gr_incr_ignore(t_gr *gr, int ignore);
+bool gr_allzero_ignore(const t_gr *gr, int ignore);
+void bigfind_multi(const int qboth, const int lb_start);

@@ -3,6 +3,11 @@
 
 #include "stdafx.h"
 #include "ramsearch.h"
+#include <omp.h>
+
+/*#define CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>*/
 
 #define gr_nv(gr) ((gr->n)*(gr->n-1)/2)
 
@@ -14,13 +19,28 @@ void gr_init(t_gr *gr, int n)
 	for (int i=0; i<gr_nv(gr); i++)
 		gr->adjarr[i] = 0;
 	gr->foundki = NONE;
-	gr->subgraph = NULL;
+	//gr->subgraph = NULL;
+}
+void gr_init_given(t_gr *gr, int n, int firstnum, int totalbits)
+{
+	if (!gr || n <= 0) return;
+	gr->n = n;
+	gr->adjarr = new bool[n*(n-1)/2];
+
+	int i;
+	for (i = 0; i < totalbits; i++, firstnum >>= 1)
+		gr->adjarr[i] = firstnum & 1;
+
+	for ( ; i<gr_nv(gr); i++)
+		gr->adjarr[i] = 0;
+	gr->foundki = NONE;
+	//gr->subgraph = NULL;
 }
 void gr_free(t_gr *gr)
 {
 	if (!gr) return;
 	delete[] gr->adjarr; gr->adjarr = NULL;
-	if (gr->subgraph) { delete[] gr->subgraph; gr->subgraph = NULL; }
+	//if (gr->subgraph) { delete[] gr->subgraph; gr->subgraph = NULL; }
 }
 void gr_print(const t_gr *gr) {
 	//std::cout << gr->n << ':';
@@ -46,9 +66,29 @@ void gr_incr(t_gr *gr) {
 		}
 	// if we made it here, the entire array is 0s now; reset to 0
 }
+// ignore first ignore bits
+void gr_incr_ignore(t_gr *gr, int ignore) {
+	if (!gr) return;
+	for (int i=ignore; i<gr_nv(gr); i++)
+		if (gr->adjarr[i] == 0) {
+			gr->adjarr[i] = 1;
+			return;
+		} else {
+			gr->adjarr[i] = 0;
+		}
+	// if we made it here, the entire array is 0s now; reset to 0
+}
 bool gr_allzero(const t_gr *gr) {
 	if (!gr) return false;
 	for (int i=0; i<gr_nv(gr); i++)
+		if (gr->adjarr[i] != 0)
+			return false;
+	return true;
+}
+// see if we're done, ignoreing first ignore bits
+bool gr_allzero_ignore(const t_gr *gr, int ignore) {
+	if (!gr) return false;
+	for (int i=ignore; i<gr_nv(gr); i++)
 		if (gr->adjarr[i] != 0)
 			return false;
 	return true;
@@ -109,7 +149,6 @@ void gr_search_rec(t_gr *gr, int qtogo, int qsofar, int *choices, bool **choicea
 	}
 }
 
-
 void bigfind(int qboth, int lb_start) {
 	t_gr gr;
 	int n = lb_start;
@@ -133,16 +172,67 @@ void bigfind(int qboth, int lb_start) {
 			std::cout << "FOUND LB R(" << qboth<<','<<qboth << ")>" << gr.n << ' ';
 			gr_print(&gr);
 			std::cout << "\t" << gr.foundki << '\n';
-			// printout subgraph
-			/*{
-				for (int i=0; i<qboth; i++)
-					std::cout << gr.subgraph[i];
-				std::cout << std::endl;
-			}*/
 		}
 		gr_free(&gr);
 
 		n++;
+	}
+}
+
+void bigfind_multi(const int qboth, const int lb_start) {
+
+	omp_set_num_threads(8);
+	bool found_ub = false;
+	bool n_lb = false;
+	int n = lb_start;
+
+	while (!found_ub)
+	{
+		n_lb = false;
+		std::cout << "\n\n";
+		#pragma omp parallel default(none) shared(n,qboth,n_lb,std::cout)
+		{
+			std::cout << "a"<< omp_get_thread_num() <<" ";
+			t_gr gr;
+
+			gr_init_given(&gr, n, omp_get_thread_num(), 3); // 2^3 = 8
+
+			do {
+				gr_search(&gr, qboth);
+				gr_incr_ignore(&gr,3);
+				// check to see if another thread found a lb bad graph
+				// if so, stop work
+
+				if (n_lb)
+					break;
+			} while (gr.foundki != NONE && !gr_allzero_ignore(&gr,3));
+
+			if (gr.foundki == NONE) {
+				// just one thread do this
+				#pragma omp critical
+					if (!n_lb) { // only run on first thread, even if others simulatneously found a bad graph
+						std::cout << "f"<< omp_get_thread_num() <<"\n";
+						n_lb = true; // tell others to stop; I found a bad graph
+						std::cout << "FOUND LB R(" << qboth<<','<<qboth << ")>" << gr.n << ' ';
+						gr_print(&gr);
+						std::cout << "\t" << gr.foundki << '\n';
+					}
+			}
+
+			gr_free(&gr);
+		}
+		// only one thread here (master thread 0)
+		//std::cout << "d"<< omp_get_thread_num() <<" ";
+
+		if (!n_lb) {
+			// no thread found a bad graph, so all the graphs must have been tried among the threads
+			found_ub = true;
+			std::cout << "FOUND UB R(" << qboth<<','<<qboth << ")<=" << n << std::endl;
+			std::cout << "\t ------\n";
+		}
+	
+		n++;
+		
 	}
 }
 
@@ -171,15 +261,25 @@ int test_main() {
 	gr_print(&gr);*/
 
 	gr_free(&gr);
+
+	/*#pragma omp parallel
+	{
+		int ID = omp_get_thread_num();
+		std::cout << "hello world ID "<< ID <<"\n";
+	}*/
+
 	return 0;
 }
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	if (test_main() != 0)
-		return 1;
+	//_CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 
-	bigfind(4,6);
+	//if (test_main() != 0)
+		//return 1;
+
+	bigfind_multi(4,3);
+	//_CrtDumpMemoryLeaks();
 
 	char c; std::cin >> c;
 	return 0;
