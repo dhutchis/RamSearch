@@ -220,7 +220,7 @@ void bigfind_multi(const int qboth, const int lb_start) {
 				gr_incr_ignore(&gr,3);
 				// check to see if another thread found a lb bad graph
 				// if so, stop work
-				//#pragma omp flush(n_lb)
+				#pragma omp flush(n_lb)
 				if (n_lb)
 					break;
 			} while (gr.foundki != NONE && !gr_allzero_ignore(&gr,3));
